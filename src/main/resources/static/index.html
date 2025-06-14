@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="id">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Sistem Review Mata Kuliah</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="./css/index.css" />
+  </head>
+  <body class="bg-gray-900 text-gray-200 font-sans antialiased">
+    <!-- Kontainer Utama -->
+    <div class="container mx-auto p-4 md:p-8 max-w-4xl">
+      <!-- Header -->
+      <header class="text-center mb-8">
+        <h1
+          class="text-3xl md:text-4xl font-bold text-teal-400 bg-clip-text text-transparent bg-gradient-to-r from-sky-400 to-fuchsia-600"
+        >
+          Portal Review Mata Kuliah
+        </h1>
+        <p class="text-gray-400 mt-2">
+          Bantu mahasiswa lain dengan memberikan ulasan jujur Anda.
+        </p>
+      </header>
+
+      <!-- Loading Indicator -->
+      <div id="loading" class="text-center text-gray-400">
+        <p>Memuat data mata kuliah...</p>
+      </div>
+
+      <!-- Daftar Mata Kuliah -->
+      <main id="mataKuliahList" class="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <!-- Kartu Mata Kuliah akan di-generate oleh JS di sini -->
+      </main>
+
+      <!-- Detail Mata Kuliah (Awalnya tersembunyi) -->
+      <section id="mataKuliahDetail" class="hidden">
+        <button
+          id="backButton"
+          class="mb-6 bg-gray-700 hover:bg-gray-600 text-white font-bold py-2 px-4 rounded-lg transition duration-200 flex items-center"
+        >
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            class="h-5 w-5 mr-2"
+            viewBox="0 0 20 20"
+            fill="currentColor"
+          >
+            <path
+              fill-rule="evenodd"
+              d="M12.707 5.293a1 1 0 010 1.414L9.414 10l3.293 3.293a1 1 0 01-1.414 1.414l-4-4a1 1 0 010-1.414l4-4a1 1 0 011.414 0z"
+              clip-rule="evenodd"
+            />
+          </svg>
+          Kembali ke Daftar
+        </button>
+
+        <!-- Info Detail -->
+        <div class="bg-gray-800 p-6 rounded-lg shadow-lg mb-8">
+          <h2 id="detailNamaMk" class="text-2xl font-bold text-teal-300"></h2>
+          <div class="flex items-center space-x-4 text-gray-400 mt-2">
+            <span
+              id="detailKodeMk"
+              class="bg-gray-700 px-2 py-1 rounded text-sm"
+            ></span>
+            <span id="detailSks" class="text-sm"></span>
+            <div id="detailAverageRating" class="flex items-center text-sm">
+              <!-- Rata-rata bintang akan di-generate oleh JS -->
+            </div>
+          </div>
+        </div>
+
+        <!-- Form Tambah Review -->
+        <div class="bg-gray-800 p-6 rounded-lg shadow-lg mb-8">
+          <h3 class="text-xl font-semibold mb-4 border-b border-gray-700 pb-2">
+            Tulis Review Anda
+          </h3>
+          <form id="reviewForm">
+            <div class="mb-4">
+              <label
+                for="mahasiswa"
+                class="block mb-2 text-sm font-medium text-gray-300"
+                >Pilih Mahasiswa</label
+              >
+              <select
+                id="mahasiswaList"
+                name="mahasiswaId"
+                class="bg-gray-700 border border-gray-600 text-white text-sm rounded-lg focus:ring-teal-500 focus:border-teal-500 block w-full p-2.5 transition duration-200"
+              >
+                <!-- Opsi mahasiswa akan di-generate oleh JS -->
+              </select>
+            </div>
+            <div class="mb-4">
+              <label class="block mb-2 text-sm font-medium text-gray-300"
+                >Rating</label
+              >
+              <div
+                id="ratingStars"
+                class="flex items-center space-x-1 text-3xl cursor-pointer text-gray-500"
+              >
+                <span data-value="1">☆</span>
+                <span data-value="2">☆</span>
+                <span data-value="3">☆</span>
+                <span data-value="4">☆</span>
+                <span data-value="5">☆</span>
+              </div>
+              <input type="hidden" id="ratingValue" name="rating" />
+            </div>
+            <div class="mb-4">
+              <label
+                for="komentar"
+                class="block mb-2 text-sm font-medium text-gray-300"
+                >Komentar Anda</label
+              >
+              <textarea
+                id="komentar"
+                name="komentar"
+                rows="4"
+                class="block p-2.5 w-full text-sm text-gray-200 bg-gray-700 rounded-lg border border-gray-600 focus:ring-teal-500 focus:border-teal-500 transition duration-200"
+                placeholder="Bagaimana pengalaman Anda dengan mata kuliah ini?"
+              ></textarea>
+            </div>
+            <button
+              type="submit"
+              class="text-white bg-teal-600 hover:bg-teal-700 focus:ring-4 focus:outline-none focus:ring-teal-800 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center transition duration-200"
+            >
+              Kirim Review
+            </button>
+          </form>
+        </div>
+
+        <!-- Daftar Review -->
+        <div>
+          <h3 class="text-xl font-semibold mb-4">Ulasan dari Mahasiswa Lain</h3>
+          <div id="reviewList" class="space-y-4">
+            <!-- Review akan di-generate oleh JS di sini -->
+          </div>
+        </div>
+      </section>
+    </div>
+
+    <script src="./js/index.js"></script>
+  </body>
+</html>
