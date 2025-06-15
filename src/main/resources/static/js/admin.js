@@ -7,6 +7,7 @@ document.addEventListener("DOMContentLoaded", () => {
   const mkTableBody = document.getElementById("mk-table-body");
   const addMahasiswaBtn = document.getElementById("addMahasiswaBtn");
   const addMkBtn = document.getElementById("addMkBtn");
+  const saveToFileBtn = document.getElementById("saveToFile");
 
   // Elemen UI Modal
   const formModal = document.getElementById("formModal");
@@ -117,6 +118,28 @@ document.addEventListener("DOMContentLoaded", () => {
       mkTableBody.innerHTML = `<tr><td colspan="4" class="text-center text-red-400 p-4">Gagal memuat data.</td></tr>`;
     }
   };
+
+  saveToFileBtn.addEventListener("click", async (e) => {
+    e.preventDefault();
+
+    try {
+      const response = await fetch(`${ADMIN_API_URL}/savetofile`, {
+        method: "GET",
+        headers: { "Content-Type": "application/json" },
+      });
+
+      if (!response.ok) {
+        const responseError = await response.json();
+        throw new Error(responseError.message || JSON.stringify(responseError));
+      }
+
+      alert("Data review berhasil disimpan ke file.");
+
+      await fetchAdminData();
+    } catch (error) {
+      alert(error.message);
+    }
+  });
 
   // --- EVENT LISTENERS ADMIN ---
   addMahasiswaBtn.addEventListener("click", () => {

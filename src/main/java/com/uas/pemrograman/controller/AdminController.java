@@ -1,5 +1,7 @@
 package com.uas.pemrograman.controller;
 
+import java.io.FileWriter;
+import java.io.PrintWriter;
 import java.util.List;
 
 import org.springframework.http.HttpStatus;
@@ -17,7 +19,10 @@ import org.springframework.web.server.ResponseStatusException;
 
 import com.uas.pemrograman.dto.MahasiswaDTO;
 import com.uas.pemrograman.dto.MataKuliahDTO;
+import com.uas.pemrograman.dto.MataKuliahDetailDTO;
+import com.uas.pemrograman.dto.MataKuliahSummaryDTO;
 import com.uas.pemrograman.service.AdminService;
+import com.uas.pemrograman.service.MataKuliahService;
 
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -29,6 +34,7 @@ import lombok.RequiredArgsConstructor;
 public class AdminController {
 
     private final AdminService adminService;
+    private final MataKuliahService mataKuliahService;
 
     @PostMapping("/mahasiswa")
     public ResponseEntity<MahasiswaDTO> createMahasiswa(@Valid @RequestBody MahasiswaDTO dto) {
@@ -74,5 +80,33 @@ public class AdminController {
         } catch (IllegalStateException e) {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, e.getMessage());
         }
+    }
+
+    @GetMapping("/savetofile")
+    public ResponseEntity<String> saveDataReviewToFile() {
+        List<MataKuliahSummaryDTO> allMatkul = mataKuliahService.getAllMataKuliah();
+
+        try (PrintWriter writer = new PrintWriter(new FileWriter("Data Review.txt"))) {
+            for (MataKuliahSummaryDTO summary : allMatkul) {
+                MataKuliahDetailDTO detail = mataKuliahService.getMataKuliahWithReviews(summary.getId());
+
+                writer.println("Mata Kuliah: " + summary.getNamaMk());
+                if (detail.getReviews() != null && !detail.getReviews().isEmpty()) {
+                    for (var review : detail.getReviews()) {
+                        writer.println("  Mahasiswa: " + review.getMahasiswaNama());
+                        writer.println("  Rating   : " + review.getRating());
+                        writer.println("  Komentar : " + review.getKomentar());
+                        writer.println("  Tanggal  : " + review.getTanggalDibuat());
+                        writer.println();
+                    }
+                } else {
+                    writer.println("  Tidak ada review.");
+                    writer.println();
+                }
+            }
+        } catch (Exception e) {
+            throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "Failed to save data to file");
+        }
+        return ResponseEntity.ok("Data review berhasil disimpan ke file.");
     }
 }
